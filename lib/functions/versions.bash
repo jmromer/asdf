@@ -17,10 +17,15 @@ version_command() {
   local file_name
   local file
 
-  file_name="$(asdf_tool_versions_filename)"
+  file_path="$(asdf_tool_versions_filename)"
+  file_name=".$(basename $file_path)"
 
   if [ "$cmd" = "global" ]; then
-    file="$HOME/$file_name"
+    if [[ "$file_path" == "$HOME"* ]]; then
+      file="$file_path"
+    else
+      file="$HOME/$file_name"
+    fi
   elif [ "$cmd" = "local-tree" ]; then
     file=$(find_tool_versions)
   else # cmd = local
